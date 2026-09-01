@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Feliz XV Años, Graciela! ✨👑</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --primary-pink: #e86390;
+  --deep-rose: #b83b6e;
+  --champagne-gold: #f3cf7a;
+  --gold-glow: #ffe89e;
+  --soft-bg: #fff5f9;
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 192, 218, 0.4);
+  --shadow-soft: 0 15px 35px rgba(184, 59, 110, 0.12);
+  --text-dark: #4a2c3a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-dark);
+  background: linear-gradient(135deg, #fff0f5 0%, #fffbf2 50%, #fdf0f7 100%);
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Canvases */
+#bgCanvas {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+}
+#confettiCanvas {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100;
+}
+
+/* Entrance Curtain Overlay */
+.entrance-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  background: radial-gradient(circle at center, #ffe4ef 0%, #7a264a 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: white; text-align: center; padding: 20px;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+  cursor: pointer;
+}
+.entrance-overlay.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+.entrance-crown {
+  font-size: 70px; margin-bottom: 20px;
+  animation: pulseCrown 2s infinite ease-in-out;
+}
+@keyframes pulseCrown {
+  0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px rgba(255,232,158,0.8)); }
+  50% { transform: scale(1.12) rotate(3deg); filter: drop-shadow(0 0 25px rgba(255,232,158,1)); }
+}
+.entrance-title {
+  font-family: 'Dancing Script', cursive; font-size: clamp(40px, 8vw, 75px);
+  color: #ffe699; text-shadow: 0 4px 20px rgba(0,0,0,0.3); margin-bottom: 10px;
+}
+.entrance-subtitle {
+  font-family: 'Playfair Display', serif; font-size: clamp(16px, 3.5vw, 24px);
+  letter-spacing: 2px; color: #fff0f6; margin-bottom: 30px; max-width: 600px;
+}
+.entrance-btn {
+  padding: 16px 36px; border-radius: 50px; border: none;
+  background: linear-gradient(135deg, #f3cf7a, #e86390);
+  color: #fff; font-size: 16px; font-weight: 700; letter-spacing: 1px;
+  box-shadow: 0 10px 30px rgba(232, 99, 144, 0.5);
+  animation: bounceBtn 2s infinite; cursor: pointer;
+}
+@keyframes bounceBtn {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5deg); }
+}
+
+/* Audio Widget */
+.audio-control {
+  position: fixed; top: 20px; right: 20px; z-index: 200;
+  background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border); padding: 10px 18px; border-radius: 30px;
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08); transition: transform 0.3s;
+}
+.audio-control:hover { transform: scale(1.05); }
+.equalizer { display: flex; align-items: flex-end; gap: 3px; height: 16px; }
+.eq-bar { width: 3px; background: var(--primary-pink); border-radius: 3px; }
+.audio-control.playing .eq-bar:nth-child(1) { animation: eq 0.8s infinite ease-in-out; }
+.audio-control.playing .eq-bar:nth-child(2) { animation: eq 1.2s infinite ease-in-out 0.2s; }
+.audio-control.playing .eq-bar:nth-child(3) { animation: eq 0.9s infinite ease-in-out 0.4s; }
+@keyframes eq { 0%, 100% { height: 4px; } 50% { height: 16px; } }
+
+/* Hero Section */
+.hero {
+  min-height: 100vh; position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center; padding: 60px 20px 40px; overflow: hidden;
+}
+.hero-content { max-width: 900px; position: relative; z-index: 3; }
+.tagline {
+  display: inline-block; padding: 8px 24px; border-radius: 30px;
+  background: rgba(232, 99, 144, 0.1); border: 1px solid rgba(232, 99, 144, 0.25);
+  color: var(--deep-rose); font-size: 13px; font-weight: 600; letter-spacing: 3px;
+  text-transform: uppercase; margin-bottom: 25px; backdrop-filter: blur(5px);
+}
+.hero-name {
+  font-family: 'Dancing Script', cursive; font-size: clamp(80px, 16vw, 170px);
+  color: var(--deep-rose); line-height: 0.95;
+  text-shadow: 0 10px 30px rgba(184, 59, 110, 0.18); margin-bottom: 5px;
+}
+.hero-age {
+  font-family: 'Playfair Display', serif; font-size: clamp(90px, 20vw, 210px);
+  font-weight: 700; line-height: 0.85; margin: 10px 0;
+  background: linear-gradient(135deg, #b83b6e 0%, #e86390 40%, #f3cf7a 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 15px 25px rgba(232, 99, 144, 0.25));
+}
+.hero-subtitle {
+  font-family: 'Playfair Display', serif; font-size: clamp(18px, 4vw, 28px);
+  font-style: italic; color: #6b4154; margin-bottom: 25px;
+}
+.stats-bar {
+  display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 30px 0;
+}
+.stat-pill {
+  background: var(--glass-bg); backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border); padding: 12px 24px; border-radius: 20px;
+  box-shadow: var(--shadow-soft); text-align: center;
+}
+.stat-pill .num { font-weight: 700; font-size: 20px; color: var(--deep-rose); }
+.stat-pill .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #885e71; }
+
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px;
+  border-radius: 50px; background: linear-gradient(135deg, var(--deep-rose), var(--primary-pink));
+  color: white; font-weight: 600; text-decoration: none; font-size: 16px;
+  box-shadow: 0 12px 30px rgba(184, 59, 110, 0.35); transition: all 0.3s ease;
+  margin-top: 15px; border: none; cursor: pointer;
+}
+.cta-btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 18px 40px rgba(184, 59, 110, 0.45);
+}
+
+/* Balloon Container */
+.balloon-layer { position: absolute; inset: 0; pointer-events: none; z-index: 2; overflow: hidden; }
+.balloon {
+  position: absolute; width: 55px; height: 70px; border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  pointer-events: auto; cursor: pointer; animation: floatUp 12s linear infinite;
+  box-shadow: inset -8px -8px 15px rgba(0,0,0,0.15), inset 8px 8px 15px rgba(255,255,255,0.6);
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.balloon::after {
+  content: ''; position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
+  width: 2px; height: 18px; background: rgba(184, 59, 110, 0.3);
+}
+@keyframes floatUp {
+  0% { transform: translateY(105vh) rotate(0deg); opacity: 0.9; }
+  100% { transform: translateY(-120px) rotate(20deg); opacity: 0; }
+}
+
+/* Sections General */
+section { padding: 90px 20px; position: relative; z-index: 3; }
+.container { max-width: 1000px; margin: 0 auto; }
+.section-header { text-align: center; margin-bottom: 50px; }
+.script-title {
+  font-family: 'Dancing Script', cursive; font-size: clamp(45px, 8vw, 70px);
+  color: var(--deep-rose); line-height: 1.1;
+}
+.section-sub {
+  font-family: 'Playfair Display', serif; font-size: 18px; color: #7a5063; margin-top: 6px;
+}
+
+/* Interactive Birthday Cake Section */
+.cake-section {
+  background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,240,246,0.8) 100%);
+  text-align: center;
+}
+.cake-container {
+  position: relative; width: 280px; height: 260px; margin: 40px auto 20px;
+}
+.cake-base {
+  position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 240px; height: 80px; background: linear-gradient(135deg, #f7a8c4, #e86390);
+  border-radius: 15px 15px 5px 5px; box-shadow: 0 10px 25px rgba(184, 59, 110, 0.2);
+  border-top: 6px solid #fff;
+}
+.cake-mid {
+  position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+  width: 180px; height: 65px; background: linear-gradient(135deg, #fff, #ffd6e5);
+  border-radius: 12px 12px 5px 5px; border-top: 5px solid #f3cf7a;
+}
+.cake-top {
+  position: absolute; bottom: 145px; left: 50%; transform: translateX(-50%);
+  width: 130px; height: 50px; background: linear-gradient(135deg, #f7a8c4, #fff);
+  border-radius: 10px 10px 5px 5px; border-top: 4px solid #fff;
+}
+.candles-row {
+  position: absolute; bottom: 195px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; justify-content: center; width: 140px;
+}
+.candle {
+  width: 7px; height: 35px; background: linear-gradient(to bottom, #f3cf7a, #e86390);
+  border-radius: 3px; position: relative; cursor: pointer;
+}
+.flame {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 16px; background: radial-gradient(circle, #fff 20%, #ffaa00 60%, #ff3300 100%);
+  border-radius: 50% 50% 30% 30%; animation: flicker 0.6s infinite alternate;
+  box-shadow: 0 0 12px #ffaa00; transition: opacity 0.5s;
+}
+.flame.out { opacity: 0; }
+@keyframes flicker {
+  0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+  100% { transform: translateX(-50%) scale(1.15) rotate(2deg); }
+}
+.blow-btn {
+  padding: 14px 32px; border-radius: 40px; border: none;
+  background: linear-gradient(135deg, #f3cf7a, #e86390); color: white;
+  font-weight: 700; font-size: 16px; cursor: pointer;
+  box-shadow: 0 8px 25px rgba(232, 99, 144, 0.35); transition: 0.3s;
+}
+.blow-btn:hover { transform: scale(1.05); }
+
+/* Glass Cards Grid */
+.glass-card {
+  background: var(--glass-bg); backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border); border-radius: 30px;
+  padding: 40px; box-shadow: var(--shadow-soft);
+}
+.letter-content {
+  font-size: 18px; line-height: 2; text-align: center; color: #523543;
+}
+.letter-content strong { color: var(--deep-rose); }
+
+/* Polaroid Vault */
+.polaroid-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px; margin-top: 40px;
+}
+.polaroid-card {
+  background: white; padding: 16px 16px 28px; border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08); transition: transform 0.4s ease, box-shadow 0.4s ease;
+  cursor: pointer; position: relative; text-align: center;
+}
+.polaroid-card:hover {
+  transform: translateY(-10px) rotate(1deg) scale(1.02);
+  box-shadow: 0 22px 45px rgba(184, 59, 110, 0.18);
+}
+.polaroid-img {
+  width: 100%; height: 220px; object-fit: cover; border-radius: 8px;
+  margin-bottom: 15px; background: #ffeef4;
+}
+.polaroid-caption {
+  font-family: 'Dancing Script', cursive; font-size: 26px; color: var(--deep-rose);
+}
+
+/* Surprise Gift Box */
+.gift-center { text-align: center; margin-top: 30px; }
+.gift-box {
+  width: 140px; height: 120px; margin: 30px auto; position: relative;
+  cursor: pointer; transition: transform 0.3s;
+}
+.gift-box:hover { transform: scale(1.08); }
+.box-body {
+  position: absolute; bottom: 0; left: 10px; width: 120px; height: 80px;
+  background: linear-gradient(135deg, #e86390, #b83b6e); border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(184, 59, 110, 0.3);
+}
+.box-lid {
+  position: absolute; top: 25px; left: 2px; width: 136px; height: 28px;
+  background: linear-gradient(135deg, #f3cf7a, #e6b84c); border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.ribbon-v {
+  position: absolute; left: 62px; top: 0; width: 16px; height: 120px;
+  background: #f3cf7a;
+}
+.ribbon-h {
+  position: absolute; left: 10px; top: 55px; width: 120px; height: 16px;
+  background: #f3cf7a;
+}
+.gift-box.opened .box-lid {
+  transform: translateY(-60px) rotate(-15deg);
+}
+.hidden-gift-note {
+  display: none; background: #ffffff; border-radius: 25px; padding: 35px;
+  margin-top: 30px; box-shadow: 0 15px 40px rgba(184, 59, 110, 0.15);
+  border: 2px solid #ffe0ed; animation: popNote 0.6s ease forwards;
+}
+@keyframes popNote {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Sky Lantern Wall */
+.lantern-input-group {
+  display: flex; gap: 12px; max-width: 600px; margin: 30px auto; flex-wrap: wrap;
+}
+.lantern-input {
+  flex: 1; min-width: 240px; padding: 16px 24px; border-radius: 30px;
+  border: 1px solid var(--glass-border); background: rgba(255,255,255,0.9);
+  font-size: 15px; outline: none; font-family: inherit;
+}
+.lantern-btn {
+  padding: 16px 30px; border-radius: 30px; border: none;
+  background: linear-gradient(135deg, #b83b6e, #e86390); color: white;
+  font-weight: 600; cursor: pointer; transition: 0.3s;
+}
+.lantern-btn:hover { transform: scale(1.04); }
+
+/* Special Animated Video Launch Button */
+.special-video-trigger {
+  text-align: center; margin: 10px auto 30px;
+}
+.special-video-btn {
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; padding: 22px 42px; border-radius: 60px; border: 3px solid rgba(255, 232, 158, 0.9);
+  background: linear-gradient(135deg, #b83b6e 0%, #e86390 50%, #f3cf7a 100%);
+  background-size: 200% 200%;
+  animation: gradientGlow 3s ease infinite, pulseVideoBtn 2.2s ease-in-out infinite;
+  color: white; font-weight: 700; text-decoration: none; cursor: pointer;
+  box-shadow: 0 15px 40px rgba(184, 59, 110, 0.4), 0 0 30px rgba(243, 207, 122, 0.6);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; overflow: hidden;
+}
+.special-video-btn:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 22px 55px rgba(184, 59, 110, 0.55), 0 0 45px rgba(243, 207, 122, 0.8);
+}
+.video-btn-title {
+  font-size: clamp(18px, 4vw, 24px); font-family: 'Dancing Script', cursive;
+  letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  display: flex; align-items: center; gap: 10px;
+}
+.video-btn-sub {
+  font-size: 13px; font-weight: 500; opacity: 0.95; letter-spacing: 1.5px; text-transform: uppercase;
+}
+.play-icon-glow {
+  width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+  animation: floatPlay 1.8s ease-in-out infinite alternate;
+}
+@keyframes pulseVideoBtn {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(232, 99, 144, 0.4)); }
+  50% { transform: scale(1.04); filter: drop-shadow(0 0 30px rgba(243, 207, 122, 0.8)); }
+}
+@keyframes gradientGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes floatPlay {
+  from { transform: translateY(-3px) scale(0.95); }
+  to { transform: translateY(3px) scale(1.08); }
+}
+
+/* Video Section Styling */
+.video-card-wrapper {
+  max-width: 880px; margin: 0 auto; padding: 25px;
+  background: var(--glass-bg); backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border); border-radius: 30px;
+  box-shadow: var(--shadow-soft); text-align: center; overflow: hidden;
+  position: relative;
+  display: none; /* Initially Hidden */
+  opacity: 0; transform: scale(0.9) translateY(30px);
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.video-card-wrapper.visible {
+  display: block; opacity: 1; transform: scale(1) translateY(0);
+}
+.video-container {
+  position: relative; width: 100%; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.18); background: #000;
+  border: 2px solid rgba(243, 207, 122, 0.6);
+}
+.video-container video {
+  width: 100%; height: auto; max-height: 520px; display: block; border-radius: 18px; outline: none;
+}
+.video-caption {
+  margin-top: 20px; text-align: center;
+}
+.video-badge {
+  display: inline-block; padding: 8px 22px; border-radius: 25px;
+  background: linear-gradient(135deg, var(--deep-rose), var(--primary-pink));
+  color: white; font-size: 13px; font-weight: 700; margin-bottom: 12px; letter-spacing: 1px;
+}
+.video-caption p {
+  font-family: 'Playfair Display', serif; font-size: 18px; color: #6b4154; font-style: italic;
+}
+
+/* Modal Popup for Wish / Balloon */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px);
+  z-index: 350; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px;
+}
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-card {
+  background: white; border-radius: 30px; padding: 40px; max-width: 500px; width: 100%;
+  text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  transform: scale(0.8); transition: transform 0.3s ease;
+}
+.modal-overlay.active .modal-card { transform: scale(1); }
+.modal-icon { font-size: 50px; margin-bottom: 15px; }
+.modal-title { font-family: 'Dancing Script', cursive; font-size: 38px; color: var(--deep-rose); }
+.modal-text { font-size: 16px; margin: 15px 0 25px; line-height: 1.7; color: #573a48; }
+
+/* Footer */
+footer {
+  text-align: center; padding: 50px 20px; background: rgba(255, 235, 243, 0.8);
+  border-top: 1px solid var(--glass-border); color: #805669; font-size: 14px;
+}
+.footer-heart { color: var(--deep-rose); font-size: 20px; display: inline-block; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+
+@media (max-width: 600px) {
+  section { padding: 60px 16px; }
+  .glass-card { padding: 25px 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Background Starry Dust Canvas -->
+<canvas id="bgCanvas"></canvas>
+<!-- Confetti & Fireworks Canvas -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- Entrance Curtain Overlay -->
+<div class="entrance-overlay" id="entranceOverlay">
+  <div class="entrance-crown">👑</div>
+  <div class="entrance-title">¡Feliz 15 Cumpleaños, Graciela!</div>
+  <div class="entrance-subtitle">Una celebración mágica de Quinceañera creada especialmente para ti ✨</div>
+  <button class="entrance-btn" id="startBtn">TOCA PARA ABRIR LA SORPRESA 🎁</button>
+</div>
+
+<!-- Audio Toggle Widget -->
+<div class="audio-control" id="audioToggle" title="Activar/Desactivar Música">
+  <div class="equalizer">
+    <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+  </div>
+  <span id="audioText" style="font-size: 13px; font-weight: 600; color: var(--deep-rose)">Música: SI</span>
+</div>
+
+<!-- Floating Popping Balloons Layer -->
+<div class="balloon-layer" id="balloonLayer"></div>
+
+<!-- Hero Section -->
+<header class="hero">
+  <div class="hero-content">
+    <span class="tagline">✨ 1 de Septiembre • Celebración de Quinceañera ✨</span>
+    <h1 class="hero-name">Graciela</h1>
+    <div class="hero-age">15</div>
+    <div class="hero-subtitle">"Quince años de belleza, gracia y un brillo infinito"</div>
+    
+    <div class="stats-bar">
+      <div class="stat-pill"><div class="num">15</div><div class="lbl">Años de Gracia</div></div>
+      <div class="stat-pill"><div class="num">5,478</div><div class="lbl">Días de Alegría</div></div>
+      <div class="stat-pill"><div class="num">131,400</div><div class="lbl">Horas de Magia</div></div>
+      <div class="stat-pill"><div class="num">∞</div><div class="lbl">Recuerdos Hermosos</div></div>
+    </div>
+
+    <a href="#cake" class="cta-btn">Sopla tus 15 Velas de Cumpleaños 🎂</a>
+  </div>
+</header>
+
+<!-- Letter Section -->
+<section id="letter">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="script-title">Un Deseo Especial de Quinceañera</h2>
+      <p class="section-sub">Escrito con todo el amor para Graciela 💖</p>
+    </div>
+
+    <div class="glass-card letter-content">
+      <p>Queridísima <strong>Graciela</strong>,</p>
+      <br>
+      <p>
+        ¡Hoy celebramos un momento verdaderamente hermoso: tus <strong>15 Años</strong>! 🌸✨
+        Entrar a tus Quince Años es el comienzo de un capítulo extraordinario, lleno de grandes sueños,
+        aventuras inolvidables y oportunidades infinitas para brillar.
+      </p>
+      <p style="margin-top: 15px;">
+        Que tu camino esté siempre iluminado de felicidad, rodeada de personas que valoren tu hermoso corazón,
+        y lleno de momentos que hagan bailar tu alma. Nunca pierdas esa sonrisa tan brillante y hermosa.
+      </p>
+      <br>
+      <p style="font-size: 24px; font-family: 'Dancing Script', cursive; color: var(--deep-rose);">
+        ¡Feliz Quinceañera, Graciela! 👑✨
+      </p>
+      <p style="font-size: 14px; color: #885e71; margin-top: 6px;">Que todos tus 15 deseos de cumpleaños se hagan realidad hoy y siempre.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Birthday Celebration Video Memory Section -->
+<section id="video">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="script-title">Video de Recuerdos de Graciela 🎬✨</h2>
+      <p class="section-sub">Un momento especial listo para ser revelado en tus 15 Años</p>
+    </div>
+
+    <!-- Animated Big Surprise Video Trigger Button -->
+    <div class="special-video-trigger">
+      <button class="special-video-btn" id="launchVideoBtn">
+        <div class="play-icon-glow">▶</div>
+        <div class="video-btn-title">🎬 TOCA AQUÍ PARA VER EL VIDEO SORPRESA DE 15 AÑOS ✨</div>
+        <div class="video-btn-sub">Haz clic para reproducir la película especial de Graciela</div>
+      </button>
+    </div>
+
+    <!-- Hidden Video Container (Unveiled on Button Click) -->
+    <div class="video-card-wrapper" id="videoCardWrapper">
+      <div class="video-container">
+        <video id="bdayVideo" controls preload="metadata" poster="crown.jpg" playsinline>
+          <source src="birthday_video.mp4" type="video/mp4">
+          <source src="WhatsApp Video 2026-09-01 at 5.41.36 PM.mp4" type="video/mp4">
+          Tu navegador no soporta la reproducción de video.
+        </video>
+      </div>
+      <div class="video-caption">
+        <span class="video-badge">🎥 PELÍCULA DE CELEBRACIÓN DE QUINCEAÑERA</span>
+        <p>"Recuerdos inolvidables para atesorar por siempre en tus 15 Años"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Cake Section -->
+<section id="cake" class="cake-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="script-title">¡Pide un Deseo de Cumpleaños!</h2>
+      <p class="section-sub">¡Sopla las 15 velas para una gran sorpresa de fuegos artificiales! 🎆</p>
+    </div>
+
+    <div class="cake-container">
+      <div class="candles-row" id="candlesRow">
+        <!-- 15 velas inyectadas por JS -->
+      </div>
+      <div class="cake-top"></div>
+      <div class="cake-mid"></div>
+      <div class="cake-base"></div>
+    </div>
+
+    <button class="blow-btn" id="blowBtn">💨 Soplar las 15 Velas</button>
+  </div>
+</section>
+
+<!-- Polaroid Memory Vault -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <h2 class="script-title">El Álbum de Quinceañera de Graciela</h2>
+      <p class="section-sub">Momentos de alegría, elegancia y sueños</p>
+    </div>
+
+    <div class="polaroid-grid">
+      <div class="polaroid-card">
+        <img src="crown.jpg" alt="Corona de Quinceanera" class="polaroid-img">
+        <div class="polaroid-caption">Corona de Realeza 👑</div>
+      </div>
+      <div class="polaroid-card">
+        <img src="cake.jpg" alt="Pastel de Quinceanera" class="polaroid-img">
+        <div class="polaroid-caption">Magia de Mis 15 Años 🎂</div>
+      </div>
+      <div class="polaroid-card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; background: linear-gradient(135deg, #fff, #fff0f5); border: 2px dashed #f7a8c4;">
+        <div style="font-size: 60px; margin-bottom: 10px;">✨</div>
+        <div class="polaroid-caption" style="font-size: 28px;">Sueños Infinitos</div>
+        <p style="font-size: 13px; color: #885e71; padding: 0 10px; margin-top: 5px;">"El futuro pertenece a quienes creen en la belleza de sus sueños."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sky Lantern Wishes Wall -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <h2 class="script-title">Envía un Deseo a las Estrellas 🏮</h2>
+      <p class="section-sub">Escribe un deseo o selecciona uno para enviarlo al cielo</p>
+    </div>
+
+    <div class="lantern-input-group">
+      <input type="text" class="lantern-input" id="lanternInput" placeholder="Escribe un deseo para Graciela... (ej. Salud y Alegría)">
+      <button class="lantern-btn" id="lanternBtn">Lanzar Farol de los Deseos ✨</button>
+    </div>
+  </div>
+</section>
+
+<!-- Surprise Gift Box Section -->
+<section>
+  <div class="container gift-center">
+    <div class="section-header">
+      <h2 class="script-title">Una Última Sorpresa Secreta 🎁</h2>
+      <p class="section-sub">Toca la caja de regalo para abrir tu mensaje secreto</p>
+    </div>
+
+    <div class="gift-box" id="giftBox">
+      <div class="box-lid"></div>
+      <div class="box-body"></div>
+      <div class="ribbon-v"></div>
+      <div class="ribbon-h"></div>
+    </div>
+
+    <div class="hidden-gift-note" id="giftNote">
+      <div style="font-size: 40px; margin-bottom: 10px;">💌</div>
+      <h3 style="font-family: 'Dancing Script', cursive; font-size: 36px; color: var(--deep-rose);">Para Graciela en sus 15 Años</h3>
+      <p style="font-size: 16px; line-height: 1.8; color: #523543; margin-top: 15px;">
+        Que tus 15 años sean tan deslumbrantes como tu sonrisa, tan dulces como tus recuerdos favoritos
+        y tan maravillosos como tú. ¡Recuerda que eres profundamente amada y celebrada hoy!
+      </p>
+      <p style="margin-top: 20px; font-weight: 700; color: var(--deep-rose);">¡Feliz 15 Cumpleaños! 🎉💖</p>
+    </div>
+  </div>
+</section>
+
+<!-- Popup Surprise Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-card">
+    <div class="modal-icon" id="modalIcon">🎈</div>
+    <div class="modal-title" id="modalTitle">¡Sorpresa de Globo!</div>
+    <div class="modal-text" id="modalText">¡Has reventado un globo de sorpresa!</div>
+    <button class="cta-btn" id="modalClose">Seguir Celebrando 🎉</button>
+  </div>
+</div>
+
+<footer>
+  <div>Hecho con <span class="footer-heart">♥</span> para los 15 Años de Graciela • 1 de Septiembre</div>
+</footer>
+
+<!-- JavaScript Logic & Audio Engine -->
+<script>
+// --- Web Audio API Synth Engine ---
+let audioCtx = null;
+let musicPlaying = false;
+let synthTimer = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
+function playNote(freq, duration, type='sine', gainVal=0.15) {
+  if (!audioCtx) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch(e){}
+}
+
+// "Happy Birthday" synth tune
+const bdayNotes = [
+  {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 293.66, d: 0.8}, {f: 261.63, d: 0.8}, {f: 349.23, d: 0.8}, {f: 329.63, d: 1.2},
+  {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 293.66, d: 0.8}, {f: 261.63, d: 0.8}, {f: 392.00, d: 0.8}, {f: 349.23, d: 1.2},
+  {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 523.25, d: 0.8}, {f: 440.00, d: 0.8}, {f: 349.23, d: 0.8}, {f: 329.63, d: 0.8}, {f: 293.66, d: 0.8},
+  {f: 466.16, d: 0.4}, {f: 466.16, d: 0.4}, {f: 440.00, d: 0.8}, {f: 349.23, d: 0.8}, {f: 392.00, d: 0.8}, {f: 349.23, d: 1.4}
+];
+
+function startMusicLoop() {
+  if (musicPlaying) return;
+  musicPlaying = true;
+  document.getElementById('audioToggle').classList.add('playing');
+  document.getElementById('audioText').innerText = "Música: SI";
+  
+  let index = 0;
+  function step() {
+    if (!musicPlaying) return;
+    const note = bdayNotes[index];
+    playNote(note.f, note.d, 'triangle', 0.12);
+    index = (index + 1) % bdayNotes.length;
+    synthTimer = setTimeout(step, note.d * 750);
+  }
+  step();
+}
+
+function stopMusicLoop() {
+  musicPlaying = false;
+  clearTimeout(synthTimer);
+  document.getElementById('audioToggle').classList.remove('playing');
+  document.getElementById('audioText').innerText = "Música: NO";
+}
+
+document.getElementById('audioToggle').addEventListener('click', () => {
+  initAudio();
+  if (musicPlaying) stopMusicLoop();
+  else startMusicLoop();
+});
+
+// Sound Effects
+function playPopSound() {
+  initAudio();
+  playNote(400 + Math.random()*300, 0.1, 'sine', 0.2);
+}
+function playBlowSound() {
+  initAudio();
+  [300, 450, 600, 750, 900].forEach((f, i) => {
+    setTimeout(() => playNote(f, 0.3, 'sine', 0.15), i * 60);
+  });
+}
+
+// --- Video Surprise Unveil & Auto-Play ---
+const launchVideoBtn = document.getElementById('launchVideoBtn');
+const videoCardWrapper = document.getElementById('videoCardWrapper');
+const bdayVideo = document.getElementById('bdayVideo');
+
+if (launchVideoBtn && videoCardWrapper && bdayVideo) {
+  launchVideoBtn.addEventListener('click', () => {
+    initAudio();
+    if (musicPlaying) {
+      stopMusicLoop();
+    }
+    launchFireworksBurst();
+    videoCardWrapper.classList.add('visible');
+    setTimeout(() => {
+      videoCardWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      bdayVideo.play().catch(e => console.log('Autoplay prevented:', e));
+    }, 250);
+  });
+}
+
+if (bdayVideo) {
+  bdayVideo.addEventListener('play', () => {
+    if (musicPlaying) {
+      stopMusicLoop();
+    }
+  });
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  initAudio();
+  startMusicLoop();
+  document.getElementById('entranceOverlay').classList.add('hidden');
+  launchFireworksBurst();
+});
+
+// --- Floating Popping Balloons ---
+const balloonColors = ['#f7a8c4', '#f3cf7a', '#b83b6e', '#d8a7ca', '#ffd1dc'];
+const balloonWishes = [
+  "🌸 '¡Que tus 15 años estén llenos de alegría y risas!'",
+  "✨ '¡Sueña en grande, Graciela! El mundo es tuyo.'",
+  "👑 '¡Feliz Quinceañera! Eres una verdadera princesa.'",
+  "💖 '¡Deseándote amor infinito y felicidad hoy!'",
+  "🌷 '¡Que todos tus deseos secretos se hagan realidad!'"
+];
+
+function createBalloon() {
+  const layer = document.getElementById('balloonLayer');
+  const b = document.createElement('div');
+  b.className = 'balloon';
+  b.style.left = Math.random() * 90 + '%';
+  b.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+  b.style.animationDuration = (8 + Math.random() * 8) + 's';
+  b.innerText = '🎈';
+  
+  b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    playPopSound();
+    createMiniBurst(e.clientX, e.clientY);
+    b.remove();
+    
+    // Show surprise modal
+    showModal('🎈 ¡Sorpresa de Globo!', balloonWishes[Math.floor(Math.random() * balloonWishes.length)], '💖');
+  });
+  
+  layer.appendChild(b);
+  setTimeout(() => { if (b.parentNode) b.remove(); }, 16000);
+}
+
+setInterval(createBalloon, 2000);
+
+// --- Modal System ---
+const modalOverlay = document.getElementById('modalOverlay');
+function showModal(title, text, icon='✨') {
+  document.getElementById('modalTitle').innerText = title;
+  document.getElementById('modalText').innerText = text;
+  document.getElementById('modalIcon').innerText = icon;
+  modalOverlay.classList.add('active');
+}
+document.getElementById('modalClose').addEventListener('click', () => {
+  modalOverlay.classList.remove('active');
+});
+
+// --- 15 Birthday Candles Logic ---
+const candlesRow = document.getElementById('candlesRow');
+let candlesBlown = 0;
+
+for (let i = 0; i < 15; i++) {
+  const c = document.createElement('div');
+  c.className = 'candle';
+  const f = document.createElement('div');
+  f.className = 'flame';
+  c.appendChild(f);
+  
+  c.addEventListener('click', () => {
+    if (!f.classList.contains('out')) {
+      f.classList.add('out');
+      playPopSound();
+      candlesBlown++;
+      checkAllCandles();
+    }
+  });
+  candlesRow.appendChild(c);
+}
+
+document.getElementById('blowBtn').addEventListener('click', () => {
+  playBlowSound();
+  document.querySelectorAll('.flame').forEach(f => f.classList.add('out'));
+  candlesBlown = 15;
+  checkAllCandles();
+});
+
+function checkAllCandles() {
+  if (candlesBlown >= 15) {
+    launchFireworksBurst();
+    setTimeout(() => {
+      showModal('🎉 ¡Todas las 15 Velas Apagadas!', '¡Tus deseos de Quinceañera han subido al cielo! Que este año te traiga una magia sin límites, Graciela. ✨', '🎂');
+    }, 600);
+  }
+}
+
+// --- Sky Lantern Launcher ---
+document.getElementById('lanternBtn').addEventListener('click', () => {
+  const input = document.getElementById('lanternInput');
+  const wishText = input.value.trim() || "Felicidad y Magia para Graciela ✨";
+  input.value = '';
+  
+  playBlowSound();
+  createSkyLantern(wishText);
+  showModal('🏮 ¡Farol Lanzado!', `Tu deseo: "${wishText}" ya flota entre las estrellas para Graciela.`, '✨');
+});
+
+function createSkyLantern(text) {
+  const lantern = document.createElement('div');
+  lantern.style.position = 'fixed';
+  lantern.style.bottom = '10px';
+  lantern.style.left = (20 + Math.random() * 60) + '%';
+  lantern.style.zIndex = '150';
+  lantern.style.padding = '10px 18px';
+  lantern.style.background = 'radial-gradient(circle, #fff3cd 0%, #ffc107 100%)';
+  lantern.style.borderRadius = '20px';
+  lantern.style.boxShadow = '0 0 25px #ffc107';
+  lantern.style.color = '#5a3d00';
+  lantern.style.fontSize = '14px';
+  lantern.style.fontWeight = '700';
+  lantern.style.pointerEvents = 'none';
+  lantern.style.transition = 'transform 8s linear, opacity 8s ease-in';
+  lantern.innerText = '🏮 ' + text;
+  
+  document.body.appendChild(lantern);
+  setTimeout(() => {
+    lantern.style.transform = 'translateY(-110vh) scale(0.6)';
+    lantern.style.opacity = '0';
+  }, 50);
+  setTimeout(() => lantern.remove(), 8500);
+}
+
+// --- Gift Box Unwrap ---
+const giftBox = document.getElementById('giftBox');
+const giftNote = document.getElementById('giftNote');
+
+giftBox.addEventListener('click', () => {
+  initAudio();
+  playBlowSound();
+  giftBox.classList.toggle('opened');
+  if (giftNote.style.display === 'block') {
+    giftNote.style.display = 'none';
+  } else {
+    giftNote.style.display = 'block';
+    launchFireworksBurst();
+  }
+});
+
+// --- Background Dust Particle Canvas ---
+const bgCanvas = document.getElementById('bgCanvas');
+const bgCtx = bgCanvas.getContext('2d');
+let bgParticles = [];
+
+function resizeBg() {
+  bgCanvas.width = window.innerWidth;
+  bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+for (let i = 0; i < 60; i++) {
+  bgParticles.push({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    r: Math.random() * 2.5 + 1,
+    alpha: Math.random() * 0.7 + 0.2,
+    speed: Math.random() * 0.5 + 0.2
+  });
+}
+
+function animateBg() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+  bgParticles.forEach(p => {
+    p.y -= p.speed;
+    if (p.y < -10) p.y = bgCanvas.height + 10;
+    bgCtx.beginPath();
+    bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    bgCtx.fillStyle = `rgba(232, 99, 144, ${p.alpha})`;
+    bgCtx.fill();
+  });
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+// --- Confetti & Fireworks Physics Canvas ---
+const cfCanvas = document.getElementById('confettiCanvas');
+const cfCtx = cfCanvas.getContext('2d');
+let cfPieces = [];
+
+function resizeCf() {
+  cfCanvas.width = window.innerWidth;
+  cfCanvas.height = window.innerHeight;
+}
+resizeCf();
+window.addEventListener('resize', resizeCf);
+
+function launchFireworksBurst() {
+  const colors = ['#e86390', '#f3cf7a', '#b83b6e', '#ffffff', '#ffd1dc'];
+  for (let i = 0; i < 180; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 12 + 2;
+    cfPieces.push({
+      x: window.innerWidth / 2,
+      y: window.innerHeight * 0.4,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      size: Math.random() * 8 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1,
+      decay: Math.random() * 0.015 + 0.008
+    });
+  }
+}
+
+function createMiniBurst(x, y) {
+  const colors = ['#f7a8c4', '#f3cf7a', '#ffffff'];
+  for (let i = 0; i < 25; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 6 + 1;
+    cfPieces.push({
+      x: x, y: y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      size: Math.random() * 6 + 3,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: 1,
+      decay: 0.025
+    });
+  }
+}
+
+function animateConfetti() {
+  cfCtx.clearRect(0, 0, cfCanvas.width, cfCanvas.height);
+  cfPieces.forEach((p, index) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.15; // gravity
+    p.alpha -= p.decay;
+    
+    cfCtx.save();
+    cfCtx.globalAlpha = Math.max(0, p.alpha);
+    cfCtx.fillStyle = p.color;
+    cfCtx.fillRect(p.x, p.y, p.size, p.size);
+    cfCtx.restore();
+    
+    if (p.alpha <= 0) cfPieces.splice(index, 1);
+  });
+  requestAnimationFrame(animateConfetti);
+}
+animateConfetti();
+</script>
+</body>
+</html>
