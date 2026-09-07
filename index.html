@@ -432,8 +432,8 @@ footer {
 
 <!-- Background MP3 Audio -->
 <audio id="bgMusic" loop preload="auto">
-  <source src="background_music.mp3?v=20260907" type="audio/mpeg">
-  <source src="@SaiAbhyankkar - Aasa Kooda (Music Video) _ Thejo Bharathwaj _ Preity Mukhundhan _ Sai Smriti.mp3" type="audio/mpeg">
+  <source src="background_music.mp3?v=20260907_2" type="audio/mpeg">
+  <source src="@SaiAbhyankkar - Aasa Kooda (Music Video) _ Thejo Bharathwaj _ Preity Mukhundhan _ Sai Smriti.mp3?v=20260907_2" type="audio/mpeg">
 </audio>
 
 <!-- Background Starry Dust Canvas -->
@@ -647,51 +647,20 @@ footer {
 
 <!-- JavaScript Logic & Audio Engine -->
 <script>
-// --- Web Audio API Synth Engine ---
-let audioCtx = null;
-let musicPlaying = false;
-let synthTimer = null;
-
-function initAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-}
-
-function playNote(freq, duration, type='sine', gainVal=0.15) {
-  if (!audioCtx) return;
-  try {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(gainVal, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-  } catch(e){}
-}
-
-// "Happy Birthday" synth tune
-const bdayNotes = [
-  {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 293.66, d: 0.8}, {f: 261.63, d: 0.8}, {f: 349.23, d: 0.8}, {f: 329.63, d: 1.2},
-  {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 293.66, d: 0.8}, {f: 261.63, d: 0.8}, {f: 392.00, d: 0.8}, {f: 349.23, d: 1.2},
-  {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 523.25, d: 0.8}, {f: 440.00, d: 0.8}, {f: 349.23, d: 0.8}, {f: 329.63, d: 0.8}, {f: 293.66, d: 0.8},
-  {f: 466.16, d: 0.4}, {f: 466.16, d: 0.4}, {f: 440.00, d: 0.8}, {f: 349.23, d: 0.8}, {f: 392.00, d: 0.8}, {f: 349.23, d: 1.4}
-];
-
-// --- Background MP3 Audio Controller ---
+// --- Background MP3 Audio Controller (Aasa Kooda) ---
 const bgMusic = document.getElementById('bgMusic');
+let musicPlaying = false;
 
 function startMusicLoop() {
-  if (musicPlaying) return;
   musicPlaying = true;
   document.getElementById('audioToggle').classList.add('playing');
   document.getElementById('audioText').innerText = "Música: SI";
   if (bgMusic) {
-    bgMusic.play().catch(e => console.log('Audio playback allowed on interaction:', e));
+    bgMusic.play().then(() => {
+      console.log('Background MP3 playing successfully');
+    }).catch(e => {
+      console.log('Audio playback error:', e);
+    });
   }
 }
 
@@ -705,22 +674,9 @@ function stopMusicLoop() {
 }
 
 document.getElementById('audioToggle').addEventListener('click', () => {
-  initAudio();
   if (musicPlaying) stopMusicLoop();
   else startMusicLoop();
 });
-
-// Sound Effects
-function playPopSound() {
-  initAudio();
-  playNote(400 + Math.random()*300, 0.1, 'sine', 0.2);
-}
-function playBlowSound() {
-  initAudio();
-  [300, 450, 600, 750, 900].forEach((f, i) => {
-    setTimeout(() => playNote(f, 0.3, 'sine', 0.15), i * 60);
-  });
-}
 
 // --- Video Surprise Unveil & Auto-Play ---
 const launchVideoBtn = document.getElementById('launchVideoBtn');
@@ -751,7 +707,6 @@ if (bdayVideo) {
 }
 
 document.getElementById('startBtn').addEventListener('click', () => {
-  initAudio();
   startMusicLoop();
   document.getElementById('entranceOverlay').classList.add('hidden');
   launchFireworksBurst();
