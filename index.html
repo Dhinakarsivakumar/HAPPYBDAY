@@ -430,6 +430,12 @@ footer {
 </head>
 <body>
 
+<!-- Background MP3 Audio -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="background_music.mp3?v=20260907" type="audio/mpeg">
+  <source src="@SaiAbhyankkar - Aasa Kooda (Music Video) _ Thejo Bharathwaj _ Preity Mukhundhan _ Sai Smriti.mp3" type="audio/mpeg">
+</audio>
+
 <!-- Background Starry Dust Canvas -->
 <canvas id="bgCanvas"></canvas>
 <!-- Confetti & Fireworks Canvas -->
@@ -676,28 +682,26 @@ const bdayNotes = [
   {f: 466.16, d: 0.4}, {f: 466.16, d: 0.4}, {f: 440.00, d: 0.8}, {f: 349.23, d: 0.8}, {f: 392.00, d: 0.8}, {f: 349.23, d: 1.4}
 ];
 
+// --- Background MP3 Audio Controller ---
+const bgMusic = document.getElementById('bgMusic');
+
 function startMusicLoop() {
   if (musicPlaying) return;
   musicPlaying = true;
   document.getElementById('audioToggle').classList.add('playing');
   document.getElementById('audioText').innerText = "Música: SI";
-  
-  let index = 0;
-  function step() {
-    if (!musicPlaying) return;
-    const note = bdayNotes[index];
-    playNote(note.f, note.d, 'triangle', 0.12);
-    index = (index + 1) % bdayNotes.length;
-    synthTimer = setTimeout(step, note.d * 750);
+  if (bgMusic) {
+    bgMusic.play().catch(e => console.log('Audio playback allowed on interaction:', e));
   }
-  step();
 }
 
 function stopMusicLoop() {
   musicPlaying = false;
-  clearTimeout(synthTimer);
   document.getElementById('audioToggle').classList.remove('playing');
   document.getElementById('audioText').innerText = "Música: NO";
+  if (bgMusic) {
+    bgMusic.pause();
+  }
 }
 
 document.getElementById('audioToggle').addEventListener('click', () => {
