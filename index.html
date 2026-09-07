@@ -650,6 +650,37 @@ footer {
 // --- Background MP3 Audio Controller (Aasa Kooda) ---
 const bgMusic = document.getElementById('bgMusic');
 let musicPlaying = false;
+let fxAudioCtx = null;
+
+function initAudio() {
+  try {
+    if (!fxAudioCtx) fxAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  } catch(e){}
+}
+
+function playFxTone(freq, duration) {
+  try {
+    initAudio();
+    if (!fxAudioCtx) return;
+    const osc = fxAudioCtx.createOscillator();
+    const gain = fxAudioCtx.createGain();
+    osc.frequency.setValueAtTime(freq, fxAudioCtx.currentTime);
+    gain.gain.setValueAtTime(0.08, fxAudioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, fxAudioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(fxAudioCtx.destination);
+    osc.start();
+    osc.stop(fxAudioCtx.currentTime + duration);
+  } catch(e){}
+}
+
+function playPopSound() {
+  playFxTone(500, 0.08);
+}
+
+function playBlowSound() {
+  playFxTone(320, 0.25);
+}
 
 function startMusicLoop() {
   musicPlaying = true;
