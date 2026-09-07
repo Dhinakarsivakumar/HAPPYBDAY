@@ -10,15 +10,15 @@
 
 <style>
 :root {
-  --primary-pink: #e86390;
-  --deep-rose: #b83b6e;
-  --champagne-gold: #f3cf7a;
+  --primary-pink: #e61c40;
+  --deep-rose: #b80028;
+  --champagne-gold: #ffbd59;
   --gold-glow: #ffe89e;
-  --soft-bg: #fff5f9;
-  --glass-bg: rgba(255, 255, 255, 0.65);
-  --glass-border: rgba(255, 192, 218, 0.4);
-  --shadow-soft: 0 15px 35px rgba(184, 59, 110, 0.12);
-  --text-dark: #4a2c3a;
+  --soft-bg: #fff0f3;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(230, 28, 64, 0.35);
+  --shadow-soft: 0 15px 35px rgba(184, 0, 40, 0.2);
+  --text-dark: #3a0810;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,7 +26,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'Plus Jakarta Sans', sans-serif;
   color: var(--text-dark);
-  background: linear-gradient(135deg, #fff0f5 0%, #fffbf2 50%, #fdf0f7 100%);
+  background: linear-gradient(135deg, #fff0f3 0%, #fffbf2 50%, #ffe6eb 100%);
   overflow-x: hidden;
   position: relative;
   min-height: 100vh;
@@ -43,7 +43,7 @@ body {
 /* Entrance Curtain Overlay */
 .entrance-overlay {
   position: fixed; inset: 0; z-index: 999;
-  background: radial-gradient(circle at center, #ffe4ef 0%, #7a264a 100%);
+  background: radial-gradient(circle at center, #ff3355 0%, #590013 100%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: white; text-align: center; padding: 20px;
   transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
@@ -754,7 +754,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
 });
 
 // --- Floating Popping Balloons ---
-const balloonColors = ['#f7a8c4', '#f3cf7a', '#b83b6e', '#d8a7ca', '#ffd1dc'];
+const balloonColors = ['#ff3355', '#ffbd59', '#b80028', '#ff6680', '#e61c40'];
 const balloonWishes = [
   "🌸 '¡Que tus 17 años estén llenos de alegría y risas!'",
   "✨ '¡Sueña en grande, Maite! El mundo es tuyo.'",
@@ -919,7 +919,7 @@ function animateBg() {
     if (p.y < -10) p.y = bgCanvas.height + 10;
     bgCtx.beginPath();
     bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    bgCtx.fillStyle = `rgba(232, 99, 144, ${p.alpha})`;
+    bgCtx.fillStyle = `rgba(230, 28, 64, ${p.alpha})`;
     bgCtx.fill();
   });
   requestAnimationFrame(animateBg);
@@ -939,7 +939,7 @@ resizeCf();
 window.addEventListener('resize', resizeCf);
 
 function launchFireworksBurst() {
-  const colors = ['#e86390', '#f3cf7a', '#b83b6e', '#ffffff', '#ffd1dc'];
+  const colors = ['#e61c40', '#ffbd59', '#b80028', '#ffffff', '#ff6680'];
   for (let i = 0; i < 180; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = Math.random() * 12 + 2;
